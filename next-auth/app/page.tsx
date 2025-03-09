@@ -7,7 +7,7 @@ import React from "react";
 const HomePage = async () => {
 	const posts = await prisma.post.findMany({
 		orderBy: {
-			updated_at: "desc"
+			created_at: "desc"
 		}
 	});
 
