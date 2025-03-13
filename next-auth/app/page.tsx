@@ -1,20 +1,29 @@
+import { auth } from "@/auth";
+import { SignOut } from "@/components/auth/SignOut";
 import PostForm from "@/components/posts/PostForm";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { prisma } from "@/lib/db";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 import React from "react";
 
 const HomePage = async () => {
+	const session = await auth();
+
+	if (!session?.user) redirect("/api/auth/signin?callbackUrl=%2Flogin");
+
 	const posts = await prisma.post.findMany({
 		orderBy: {
-			created_at: "desc"
-		}
+			created_at: "desc",
+		},
 	});
 
 	return (
 		<>
 			<section className="pb-6">
 				<h1 className="text-4xl font-bold">Home Page</h1>
+				<SignOut />
 			</section>
 
 			<section className="pb-6">
